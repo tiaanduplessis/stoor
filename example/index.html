@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<title>Stoor - Example</title>
+</head>
+
+<body>
+	<h1>Check the console</h1>
+	<script src="../dist/stoor.js"></script>
+	<script>
+		var things = new Stoor({ namespace: 'things' }) // Namespaced to things and uses local storage
+		var otherThings = new Stoor({ namespace: 'otherThings', storage: 'session' }) // Namespaced to other things and uses Session storage
+		things.set('foo', 1)
+		things.set('bar', 2)
+		things.set('baz', { foo: 4, baz: 4 })
+		console.log(things.get('baz')) // {foo: 4, baz: 4}
+		console.log(otherThings.get('baz')) // null
+		console.log(things.get(['foo', 'bar'])) // [1, 2]
+
+		things.remove(['foo', 'bar'])
+		console.log(things.get(['foo', 'bar'])) // [null, null]
+
+		otherThings.set([['bar', 5], ['foo', 6]]) // Array of key value pairs to multi set
+		console.log(otherThings.get(['foo', 'bar'])) // [6, 5]
+
+		things.clear()
+	</script>
+</body>
+
+</html>

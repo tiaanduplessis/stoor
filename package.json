@@ -1,0 +1,57 @@
+{
+  "name": "stoor",
+  "version": "1.0.0",
+  "description": "Local and Session storage wrapper with support for namespacing and multi get, set and remove",
+  "license": "MIT",
+  "main": "dist/stoor.common.js",
+  "browser": "dist/stoor.js",
+  "jsnext:main": "dist/stoor.es.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiaanduplessis/stoor.git"
+  },
+  "homepage": "https://github.com/tiaanduplessis/stoor",
+  "bugs": "https://github.com/tiaanduplessis/stoor/issues",
+  "author": {
+    "name": "Tiaan",
+    "email": "tiaanduplessis@hotmail.com",
+    "url": "tiaan.beer"
+  },
+  "scripts": {
+    "start": "npm run dev",
+    "pretest": "npm run lint:fix",
+    "test": "jest --env=node",
+    "test:watch": "npm test -- --watch",
+    "coverage": "npm test -- --coverage",
+    "lint": "standard --verbose",
+    "lint:fix": "standard --fix --verbose",
+    "precommit": "npm test",
+    "build": "bili --format cjs --format es --format umd --compress",
+    "prepublish": "npm run build",
+    "release": "npm run build && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+  },
+  "keywords": [
+    "local-storage",
+    "session-storage",
+    "namespace",
+    "storage",
+    "wrapper",
+    "stoor"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-env": "^1.4.0",
+    "bili": "^0.15.0",
+    "husky": "^0.13.3",
+    "jest": "^20.0.1",
+    "standard": "^10.0.2"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
+  "standard": {
+    "ignore": "dist"
+  }
+}
