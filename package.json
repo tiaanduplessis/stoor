@@ -20,7 +20,7 @@
   "scripts": {
     "start": "npm run dev",
     "pretest": "npm run lint:fix",
-    "test": "jest --env=node",
+    "test": "jest",
     "test:watch": "npm test -- --watch",
     "coverage": "npm test -- --coverage",
     "lint": "standard --verbose",
@@ -28,7 +28,7 @@
     "precommit": "npm test",
     "build": "bili --format cjs --format es --format umd --compress",
     "prepublish": "npm run build",
-    "release": "npm run build && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+    "release": "npm run build && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push --tags && npm publish"
   },
   "keywords": [
     "local-storage",
