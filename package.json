@@ -20,7 +20,7 @@
   "scripts": {
     "start": "npm run dev",
     "pretest": "npm run lint:fix",
-    "test": "jest --env=node",
+    "test": "jest",
     "test:watch": "npm test -- --watch",
     "coverage": "npm test -- --coverage",
     "lint": "standard --verbose",
