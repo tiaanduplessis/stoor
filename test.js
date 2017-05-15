@@ -20,3 +20,11 @@ test('should set/get value', () => {
   expect(foo.get('bar')).toBe('hello')
   expect(foo.get('baz')).toBe(5)
 })
+
+test('should remove value', () => {
+  const foo = new Stoor()
+  foo.set('foo', 1)
+  expect(foo.get('foo')).toBe(1)
+  expect(foo.remove('foo')).toBeTruthy()
+  expect(foo.get('foo')).toBeNull()
+})
