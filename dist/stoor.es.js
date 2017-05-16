@@ -1,15 +1,15 @@
 var storage = {};
 var inMemory = {
-  getItem: function getItem (key) {
+  getItem: function getItem(key) {
     return storage[key] || null
   },
 
-  setItem: function setItem (key, value) {
+  setItem: function setItem(key, value) {
     storage[key] = value;
     return true
   },
 
-  removeItem: function removeItem (key) {
+  removeItem: function removeItem(key) {
     if (key in storage) {
       return delete storage[key]
     }
@@ -17,13 +17,26 @@ var inMemory = {
     return false
   },
 
-  clear: function clear () {
+  clear: function clear() {
     storage = {};
     return true
   }
 };
 
-var Stoor = function Stoor (opts) {
+// http://stackoverflow.com/a/27081419
+var isSupported = function(storageType) {
+  if (typeof storageType === 'object') {
+    try {
+      storageType.setItem('localStorage', 1);
+      storageType.removeItem('localStorage');
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+};
+
+var Stoor = function Stoor(opts) {
   if ( opts === void 0 ) opts = { namespace: '' };
 
   if (!(this instanceof Stoor)) {
@@ -31,13 +44,9 @@ var Stoor = function Stoor (opts) {
   }
 
   if (opts.storage === 'session') {
-    this.storage = typeof window !== 'undefined' && window.sessionStorage
-      ? window.sessionStorage
-      : inMemory;
+    this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : inMemory;
   } else {
-    this.storage = typeof window !== 'undefined' && window.localStorage
-      ? window.localStorage
-      : inMemory;
+    this.storage = isSupported(window.localStorage) ? window.localStorage : inMemory;
   }
 
   this.namespace = opts.namespace;
