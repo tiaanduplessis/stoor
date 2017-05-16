@@ -36,6 +36,8 @@ var isSupported = function(storageType) {
       return false
     }
   }
+
+  return false
 };
 
 var Stoor = function Stoor(opts) {
