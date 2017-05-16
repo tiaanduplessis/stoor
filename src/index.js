@@ -25,6 +25,19 @@ const inMemory = {
   }
 }
 
+// http://stackoverflow.com/a/27081419
+const isSupported = function (storageType) {
+  if (typeof storageType === 'object') {
+    try {
+      storageType.setItem('localStorage', 1)
+      storageType.removeItem('localStorage')
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+}
+
 class Stoor {
   constructor (opts = { namespace: '' }) {
     if (!(this instanceof Stoor)) {
@@ -32,13 +45,9 @@ class Stoor {
     }
 
     if (opts.storage === 'session') {
-      this.storage = typeof window !== 'undefined' && window.sessionStorage
-        ? window.sessionStorage
-        : inMemory
+      this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : inMemory
     } else {
-      this.storage = typeof window !== 'undefined' && window.localStorage
-        ? window.localStorage
-        : inMemory
+      this.storage = isSupported(window.localStorage) ? window.localStorage : inMemory
     }
 
     this.namespace = opts.namespace
