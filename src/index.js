@@ -36,6 +36,8 @@ const isSupported = function (storageType) {
       return false
     }
   }
+
+  return false
 }
 
 class Stoor {
