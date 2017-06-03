@@ -1,6 +1,6 @@
 {
   "name": "stoor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Local and Session storage wrapper with support for namespacing and multi get, set and remove",
   "license": "MIT",
   "main": "dist/stoor.js",
