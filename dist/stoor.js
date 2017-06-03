@@ -6,16 +6,16 @@
 
 var storage = {};
 var inMemory = {
-  getItem: function getItem(key) {
+  getItem: function getItem (key) {
     return storage[key] || null
   },
 
-  setItem: function setItem(key, value) {
+  setItem: function setItem (key, value) {
     storage[key] = value;
     return true
   },
 
-  removeItem: function removeItem(key) {
+  removeItem: function removeItem (key) {
     if (key in storage) {
       return delete storage[key]
     }
@@ -23,14 +23,14 @@ var inMemory = {
     return false
   },
 
-  clear: function clear() {
+  clear: function clear () {
     storage = {};
     return true
   }
 };
 
 // http://stackoverflow.com/a/27081419
-var isSupported = function(storageType) {
+var isSupported = function (storageType) {
   if (typeof storageType === 'object') {
     try {
       storageType.setItem('localStorage', 1);
@@ -44,7 +44,7 @@ var isSupported = function(storageType) {
   return false
 };
 
-var Stoor = function Stoor(opts) {
+var Stoor = function Stoor (opts) {
   if ( opts === void 0 ) opts = { namespace: '' };
 
   if (!(this instanceof Stoor)) {

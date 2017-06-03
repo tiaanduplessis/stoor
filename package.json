@@ -40,8 +40,8 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "babel-preset-env": "^1.4.0",
-    "bili": "^0.15.0",
+    "babel-preset-env": "^1.5.1",
+    "bili": "^0.15.5",
     "husky": "^0.13.3",
     "jest": "^20.0.1",
     "standard": "^10.0.2"
