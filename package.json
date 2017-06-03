@@ -3,8 +3,8 @@
   "version": "1.0.2",
   "description": "Local and Session storage wrapper with support for namespacing and multi get, set and remove",
   "license": "MIT",
-  "main": "dist/stoor.common.js",
-  "browser": "dist/stoor.js",
+  "main": "dist/stoor.js",
+  "browser": "dist/stoor.min.js",
   "jsnext:main": "dist/stoor.es.js",
   "repository": {
     "type": "git",
