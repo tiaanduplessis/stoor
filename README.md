@@ -64,6 +64,8 @@
 
 ## About
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tiaanduplessis/stoor.svg)](https://greenkeeper.io/)
+
 This module is a wrapper around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
 
 - Parsing and stringification of values
