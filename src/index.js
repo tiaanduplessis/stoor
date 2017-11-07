@@ -41,15 +41,19 @@ const isSupported = function (storageType) {
 }
 
 class Stoor {
-  constructor (opts = { namespace: '' }) {
+  constructor (opts = { namespace: '', fallback: inMemory }) {
     if (!(this instanceof Stoor)) {
       return new Stoor(opts)
     }
 
+    if (!opts.fallback.getItem || !opts.fallback.setItem || !opts.fallback.removeItem) {
+      throw new Error('Invalid fallback provided')
+    }
+
     if (opts.storage === 'session') {
-      this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : inMemory
+      this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : opts.fallback
     } else {
-      this.storage = isSupported(window.localStorage) ? window.localStorage : inMemory
+      this.storage = isSupported(window.localStorage) ? window.localStorage : opts.fallback
     }
 
     this.namespace = opts.namespace

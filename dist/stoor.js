@@ -45,16 +45,20 @@ var isSupported = function (storageType) {
 };
 
 var Stoor = function Stoor (opts) {
-  if ( opts === void 0 ) opts = { namespace: '' };
+  if ( opts === void 0 ) opts = { namespace: '', fallback: inMemory };
 
   if (!(this instanceof Stoor)) {
     return new Stoor(opts)
   }
 
+  if (!fallback.getItem || !fallback.setItem || !fallback.removeItem) {
+    throw new Error('Invalid fallback provided')
+  }
+
   if (opts.storage === 'session') {
-    this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : inMemory;
+    this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : fallback;
   } else {
-    this.storage = isSupported(window.localStorage) ? window.localStorage : inMemory;
+    this.storage = isSupported(window.localStorage) ? window.localStorage : fallback;
   }
 
   this.namespace = opts.namespace;

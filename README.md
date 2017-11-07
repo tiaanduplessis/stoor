@@ -16,23 +16,17 @@
   <a href="https://travis-ci.org/tiaanduplessis/stoor">
     <img src="https://img.shields.io/travis/tiaanduplessis/stoor.svg?style=flat-square" alt="Travis Build" />
   </a>
-  <a href="https://github.com/RichardLitt/standard-readme)">
-    <img src="https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square" alt="Standard Readme" />
-  </a>
   <a href="https://badge.fury.io/gh/tiaanduplessis%2Fstoor">
     <img src="https://badge.fury.io/gh/tiaanduplessis%2Fstoor.svg?style=flat-square" alt="GitHub version" />
   </a>
-  <a href="https://dependencyci.com/github/tiaanduplessis/stoor">
-    <img src="https://dependencyci.com/github/tiaanduplessis/stoor/badge?style=flat-square" alt="Dependency CI" />
+    <a href="https://greenkeeper.io/">
+    <img src="https://badges.greenkeeper.io/tiaanduplessis/stoor.svg" alt="Greenkeeper" />
   </a>
   <a href="https://github.com/tiaanduplessis/stoor/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/stoor.svg?style=flat-square" alt="License" />
   </a>
   <a href="http://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs" />
-  </a>
-  <a href="https://www.paypal.me/tiaanduplessis/1">
-    <img src="https://img.shields.io/badge/$-support-green.svg?style=flat-square" alt="Donate" />
   </a>
 </div>
 <br>
@@ -64,12 +58,10 @@
 
 ## About
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/tiaanduplessis/stoor.svg)](https://greenkeeper.io/)
-
 This module is a wrapper around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
 
 - Parsing and stringification of values
-- In memory fallback if the chosen storage API is not available
+- Plugable fallback (defaults to in memory)
 - Namespacing
 - Multi get, set & remove of values
 
@@ -116,11 +108,17 @@ This example shows the entire API in use:
 
 ```
 
+You can configure any module that conforms to the the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage)/[sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) API to be the fallback, for example using [cookie-session-storage](https://github.com/tiaanduplessis/cookie-session-storage):
+
+```js
+new Stoor({fallback: cookieSessionStorage})
+
+// Use as normal
+```
+
 ## Contribute
 
 Contributions are welcome. Please open up an issue or create PR if you would like to help out.
-
-Note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
 ## License
 
