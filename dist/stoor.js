@@ -51,14 +51,14 @@ var Stoor = function Stoor (opts) {
     return new Stoor(opts)
   }
 
-  if (!fallback.getItem || !fallback.setItem || !fallback.removeItem) {
+  if (!opts.fallback.getItem || !opts.fallback.setItem || !opts.fallback.removeItem) {
     throw new Error('Invalid fallback provided')
   }
 
   if (opts.storage === 'session') {
-    this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : fallback;
+    this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : opts.fallback;
   } else {
-    this.storage = isSupported(window.localStorage) ? window.localStorage : fallback;
+    this.storage = isSupported(window.localStorage) ? window.localStorage : opts.fallback;
   }
 
   this.namespace = opts.namespace;
