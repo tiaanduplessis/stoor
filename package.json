@@ -41,7 +41,7 @@
   "dependencies": {},
   "devDependencies": {
     "babel-preset-env": "^1.5.1",
-    "bili": "^0.18.1",
+    "bili": "^0.19.0",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "standard": "^10.0.2"
