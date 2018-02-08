@@ -58,7 +58,7 @@
 
 ## About
 
-This module is a wrapper around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
+This module is a small wrapper (520 bytes gzipped) around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
 
 - Parsing and stringification of values
 - Plugable fallback (defaults to in memory)
@@ -78,9 +78,9 @@ $ yarn add stoor
 Or with CDN:
 
 ```html
-<script src="https://cdn.rawgit.com/tiaanduplessis/stoor/master/dist/stoor.min.js"></script>
+<script src="https://cdn.rawgit.com/tiaanduplessis/stoor/master/dist/stoor.umd.js"></script>
 <!-- Or -->
-<script src="https://unpkg.com/stoor/dist/stoor.min.js"></script>
+<script src="https://unpkg.com/stoor/dist/stoor.umd.js"></script>
 ```
 
 ## Usage

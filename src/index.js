@@ -1,6 +1,7 @@
 'use strict'
 
 let storage = {}
+
 const inMemory = {
   getItem (key) {
     return storage[key] || null

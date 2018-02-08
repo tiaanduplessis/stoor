@@ -4,8 +4,8 @@
   "description": "Local and Session storage wrapper with support for namespacing and multi get, set and remove",
   "license": "MIT",
   "main": "dist/stoor.js",
-  "browser": "dist/stoor.min.js",
-  "jsnext:main": "dist/stoor.es.js",
+  "browser": "dist/stoor.umd.js",
+  "module": "dist/stoor.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tiaanduplessis/stoor.git"
@@ -14,8 +14,7 @@
   "bugs": "https://github.com/tiaanduplessis/stoor/issues",
   "author": {
     "name": "Tiaan",
-    "email": "tiaanduplessis@hotmail.com",
-    "url": "tiaan.beer"
+    "email": "tiaanduplessis@hotmail.com"
   },
   "scripts": {
     "start": "npm run dev",
@@ -25,10 +24,8 @@
     "coverage": "npm test -- --coverage",
     "lint": "standard --verbose",
     "lint:fix": "standard --fix --verbose",
-    "precommit": "npm test",
-    "build": "bili --format cjs --format es --format umd --compress",
-    "prepublish": "npm run build",
-    "release": "npm run build && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push --tags && npm publish"
+    "build": "microbundle --name=Stoor",
+    "dev": "microbundle --name=Stoor watch"
   },
   "keywords": [
     "local-storage",
@@ -41,9 +38,8 @@
   "dependencies": {},
   "devDependencies": {
     "babel-preset-env": "^1.5.1",
-    "bili": "^2.0.0",
-    "husky": "^0.14.3",
     "jest": "^22.0.0",
+    "microbundle": "^0.4.3",
     "standard": "^10.0.2"
   },
   "babel": {
