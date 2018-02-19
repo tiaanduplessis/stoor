@@ -40,7 +40,7 @@
     "babel-preset-env": "^1.5.1",
     "jest": "^22.0.0",
     "microbundle": "^0.4.3",
-    "standard": "^10.0.2"
+    "standard": "^11.0.0"
   },
   "babel": {
     "presets": [
