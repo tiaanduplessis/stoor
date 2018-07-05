@@ -39,7 +39,7 @@
   "devDependencies": {
     "babel-preset-env": "^1.5.1",
     "jest": "^22.0.0",
-    "microbundle": "^0.4.3",
+    "microbundle": "^0.5.0",
     "standard": "^11.0.0"
   },
   "babel": {
