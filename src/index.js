@@ -60,7 +60,7 @@ class Stoor {
     this.namespace = namespace
   }
 
-  get (key) {
+  get (key, def = null) {
     if (Array.isArray(key)) {
       return key.map(currentKey => {
         const namespacedKey = `${this.namespace}:${currentKey}`
@@ -69,7 +69,13 @@ class Stoor {
     }
 
     const namespacedKey = `${this.namespace}:${key}`
-    return JSON.parse(this.storage.getItem(namespacedKey))
+
+    try {
+      const result = JSON.parse(this.storage.getItem(namespacedKey))
+      return result !== null ? result : def
+    } catch (error) {
+      return def
+    }
   }
 
   set (key, value) {
