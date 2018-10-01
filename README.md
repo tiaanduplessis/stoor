@@ -42,7 +42,7 @@
 
 ## About
 
-This module is a small wrapper (520 bytes gzipped) around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
+This module is a small wrapper (595 bytes gzipped) around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
 
 - Parsing and stringification of values
 - Plugable fallback (defaults to in memory)
