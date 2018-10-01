@@ -18,12 +18,11 @@
   },
   "scripts": {
     "start": "npm run dev",
-    "pretest": "npm run lint:fix",
+    "pretest": "npm run lint",
     "test": "jest",
     "test:watch": "npm test -- --watch",
     "coverage": "npm test -- --coverage",
-    "lint": "standard --verbose",
-    "lint:fix": "standard --fix --verbose",
+    "lint": "standard --fix --verbose",
     "build": "microbundle --name=Stoor",
     "dev": "microbundle --name=Stoor watch"
   },
@@ -38,9 +37,9 @@
   "dependencies": {},
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
-    "jest": "^23.5.0",
+    "jest": "^23.6.0",
     "microbundle": "^0.6.0",
-    "standard": "^12.0.0"
+    "standard": "^12.0.1"
   },
   "babel": {
     "presets": [
