@@ -62,8 +62,6 @@ $ yarn add stoor
 Or with CDN:
 
 ```html
-<script src="https://cdn.rawgit.com/tiaanduplessis/stoor/master/dist/stoor.umd.js"></script>
-<!-- Or -->
 <script src="https://unpkg.com/stoor/dist/stoor.umd.js"></script>
 ```
 
