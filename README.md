@@ -1,6 +1,6 @@
 <h1 align="center">📦 stoor</h1>
 <div align="center">
-  <strong>Local and Session storage wrapper with support for namespacing and multi get, set and remove</strong>
+  <strong>Local and Session storage wrapper with support for namespacing and multi get/set and remove</strong>
 </div>
 <br>
 <div align="center">
@@ -42,7 +42,7 @@
 
 ## About
 
-This module is a small wrapper (595 bytes gzipped) around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
+This module is a small wrapper (Less than 700 bytes) around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
 
 - Parsing and stringification of values
 - Plugable fallback (defaults to in memory)
