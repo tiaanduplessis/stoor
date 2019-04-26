@@ -1,7 +1,7 @@
 /* eslint-env jest */
 'use strict'
 
-import Stoor from './src/'
+import Stoor from '../'
 
 test('should export', () => {
   expect(Stoor).toBeDefined()

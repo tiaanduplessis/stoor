@@ -1,43 +1,5 @@
-let storage = {}
-
-const inMemory = {
-  getItem (key) {
-    return storage[key] || null
-  },
-
-  setItem (key, value) {
-    storage[key] = value
-    return true
-  },
-
-  removeItem (key) {
-    if (key in storage) {
-      return delete storage[key]
-    }
-
-    return false
-  },
-
-  clear () {
-    storage = {}
-    return true
-  }
-}
-
-// http://stackoverflow.com/a/27081419
-const isSupported = function (storageType) {
-  if (typeof storageType === 'object') {
-    try {
-      storageType.setItem('localStorage', 1)
-      storageType.removeItem('localStorage')
-      return true
-    } catch (e) {
-      return false
-    }
-  }
-
-  return false
-}
+import inMemory from './in-memory'
+import isSupported from './is-supported'
 
 class Stoor {
   constructor ({ namespace = '', fallback = inMemory, storage = 'local' } = { }) {
@@ -49,7 +11,9 @@ class Stoor {
       throw new Error('Invalid fallback provided')
     }
 
-    if (storage === 'session') {
+    if (typeof window === 'undefined') {
+      this.storage = fallback
+    } else if (storage === 'session') {
       this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : fallback
     } else {
       this.storage = isSupported(window.localStorage) ? window.localStorage : fallback
@@ -81,12 +45,14 @@ class Stoor {
       return key.map(pair => {
         const [key, value] = pair
         const namespacedKey = `${this.namespace}:${key}`
-        return this.storage.setItem(namespacedKey, JSON.stringify(value))
+        this.storage.setItem(namespacedKey, JSON.stringify(value))
       })
+    } else {
+      const namespacedKey = `${this.namespace}:${key}`
+      this.storage.setItem(namespacedKey, JSON.stringify(value))
     }
 
-    const namespacedKey = `${this.namespace}:${key}`
-    return this.storage.setItem(namespacedKey, JSON.stringify(value))
+    return this
   }
 
   remove (key) {
@@ -95,10 +61,12 @@ class Stoor {
         const namespacedKey = `${this.namespace}:${currentKey}`
         return this.storage.removeItem(namespacedKey)
       })
+    } else {
+      const namespacedKey = `${this.namespace}:${key}`
+      this.storage.removeItem(namespacedKey)
     }
 
-    const namespacedKey = `${this.namespace}:${key}`
-    return this.storage.removeItem(namespacedKey)
+    return this
   }
 
   clear () {
