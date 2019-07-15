@@ -28,3 +28,9 @@ test('should remove value', () => {
   expect(foo.remove('foo')).toBeTruthy()
   expect(foo.get('foo')).toBeNull()
 })
+
+test('should throw if no key provided', () => {
+  const foo = new Stoor()
+  expect(() => foo.get()).toThrow()
+  expect(() => foo.set('bar')).toThrow()
+})

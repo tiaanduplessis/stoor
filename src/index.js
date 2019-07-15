@@ -22,7 +22,11 @@ class Stoor {
     this.namespace = namespace
   }
 
-  get (key, def = null) {
+  get (key = '', def = null) {
+    if (typeof key !== 'string' || !key.length) {
+      throw new Error('Invalid key provided')
+    }
+
     if (Array.isArray(key)) {
       return key.map(currentKey => {
         const namespacedKey = `${this.namespace}:${currentKey}`
@@ -41,6 +45,14 @@ class Stoor {
   }
 
   set (key, value) {
+    if (typeof key !== 'string' || !key.length) {
+      throw new Error('Invalid key provided')
+    }
+
+    if (key && value === undefined) {
+      throw new Error('Can not set value to undefined')
+    }
+
     if (Array.isArray(key)) {
       return key.map(pair => {
         const [key, value] = pair
