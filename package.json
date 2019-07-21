@@ -41,7 +41,7 @@
     "@babel/preset-env": "7.5.4",
     "jest": "24.8.0",
     "microbundle": "0.11.0",
-    "standard": "13.0.2"
+    "standard": "13.1.0"
   },
   "standard": {
     "ignore": "dist",
