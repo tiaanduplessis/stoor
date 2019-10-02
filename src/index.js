@@ -17,7 +17,7 @@ class Stoor {
       this.storage = isSupported(window.sessionStorage) ? window.sessionStorage : fallback
     } else {
       this.storage = isSupported(window.localStorage) ? window.localStorage : fallback
-    }
+		}
 
     this.namespace = namespace
   }
@@ -29,22 +29,25 @@ class Stoor {
 
     if (Array.isArray(key)) {
       return key.map(currentKey => {
-        const namespacedKey = `${this.namespace}:${currentKey}`
-        return JSON.parse(this.storage.getItem(namespacedKey))
+				const namespacedKey = `${this.namespace}:${currentKey}`
+				// TODO: add expiry  check step
+				const data = JSON.parse(this.storage.getItem(namespacedKey))
+
+				return data.expiredAt ? (data.expiredAt < Date.now() ? data.value : def) : data.value
       })
     }
 
     const namespacedKey = `${this.namespace}:${key}`
 
     try {
-      const result = JSON.parse(this.storage.getItem(namespacedKey))
-      return result !== null ? result : def
+      const data = JSON.parse(this.storage.getItem(namespacedKey))
+      return data.expiredAt ? (data.expiredAt < Date.now() ? data.value : def) : data.value
     } catch (error) {
       return def
     }
   }
 
-  set (key, value) {
+  set (key, value, expiryTime) {
     if (typeof key !== 'string' || !key.length) {
       throw new Error('Invalid key provided')
     }
@@ -56,12 +59,20 @@ class Stoor {
     if (Array.isArray(key)) {
       return key.map(pair => {
         const [key, value] = pair
-        const namespacedKey = `${this.namespace}:${key}`
-        this.storage.setItem(namespacedKey, JSON.stringify(value))
+				const namespacedKey = `${this.namespace}:${key}`
+				const data = {
+					value,
+					expiredAt: expiryTime ? (Date.now() + expiryTime) : null
+				}
+        this.storage.setItem(namespacedKey, JSON.stringify(data))
       })
     } else {
-      const namespacedKey = `${this.namespace}:${key}`
-      this.storage.setItem(namespacedKey, JSON.stringify(value))
+			const namespacedKey = `${this.namespace}:${key}`
+			const data = {
+				value,
+				expiredAt: expiryTime ? (Date.now() + expiryTime) : null
+			}
+      this.storage.setItem(namespacedKey, JSON.stringify(data))
     }
 
     return this
