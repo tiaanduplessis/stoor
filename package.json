@@ -6,6 +6,7 @@
   "main": "dist/stoor.js",
   "browser": "dist/stoor.umd.js",
   "module": "dist/stoor.es.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/tiaanduplessis/stoor.git"
@@ -24,6 +25,7 @@
     "coverage": "npm test -- --coverage",
     "lint": "standard --fix --verbose",
     "build": "microbundle --name=Stoor",
+    "prepublish": "cp src/index.d.ts dist/",
     "dev": "microbundle --name=Stoor watch"
   },
   "keywords": [
