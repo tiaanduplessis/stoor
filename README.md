@@ -63,6 +63,9 @@ pnpm add stoor
 	otherThings.set([['bar', 5], ['foo', 6]]) // Array of key value pairs to multi set
 	console.log(otherThings.get(['foo', 'bar'])) // [6, 5]
 
+  otherThings.set('nana', 1, 5000) // Will expire within 5000 ms.
+  otherThings.get('nana', 3)  // Returns default value if expired.
+
 	things.clear()
 ```
 

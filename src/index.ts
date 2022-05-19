@@ -3,11 +3,21 @@ import { isStorage } from "./is-storage";
 import { isSupported } from "./is-supported";
 import { StorageLike } from "./types";
 
+export interface StorageConfig {
+	storage?: string | StorageLike;
+	fallback?: StorageLike;
+	namespace?: string;
+}
+
 class Stoor {
 	namespace: string;
 	storage: StorageLike;
 
-	constructor({ namespace = "", fallback = inMemory, storage = "local" } = {}) {
+	constructor({
+		namespace = "",
+		fallback = inMemory,
+		storage = "local",
+	}: StorageConfig = {}) {
 		if (!(this instanceof Stoor)) {
 			return new Stoor({ namespace, fallback, storage });
 		}
@@ -33,10 +43,14 @@ class Stoor {
 
 	private getValue = (key: string, def?: any) => {
 		try {
-			const value = JSON.parse(this.storage.getItem(key));
+			const result = JSON.parse(this.storage.getItem(key));
+			const { value, timeout } = result;
+			if (timeout !== null) {
+				return timeout < Date.now() ? value ?? def : undefined;
+			}
 			return value ?? def;
 		} catch {
-			return this.storage.getItem(key) || def;
+			return def;
 		}
 	};
 
@@ -56,7 +70,19 @@ class Stoor {
 		return this.getValue(namespacedKey, def);
 	}
 
-	set(key: string | string[], value?: any) {
+	private setValue = (
+		key: string,
+		value: any,
+		timeout: number | null = null
+	) => {
+		const entry = {
+			value,
+			timeout: timeout ? Date.now() + timeout : null,
+		};
+		this.storage.setItem(key, JSON.stringify(entry));
+	};
+
+	set(key: string | string[], value?: any, timeout: number | null = null) {
 		if (typeof key !== "string" && !Array.isArray(key)) {
 			throw new Error("Invalid key provided");
 		}
@@ -65,11 +91,11 @@ class Stoor {
 			return key.map((pair) => {
 				const [key, value] = pair;
 				const namespacedKey = `${this.namespace}:${key}`;
-				this.storage.setItem(namespacedKey, JSON.stringify(value));
+				this.setValue(namespacedKey, value, timeout);
 			});
 		} else {
 			const namespacedKey = `${this.namespace}:${key}`;
-			this.storage.setItem(namespacedKey, JSON.stringify(value));
+			this.setValue(namespacedKey, value, timeout);
 		}
 
 		return this;
