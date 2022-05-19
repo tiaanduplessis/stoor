@@ -10,7 +10,7 @@ Storage wrapper with support for namespacing, timeouts and multi get/set and rem
 
 ## 👀 Background
 
-This module is a small wrapper around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
+This module is a small wrapper around the [local](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) storage.
 
 ### Features
 
