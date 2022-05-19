@@ -1,7 +1,7 @@
 {
   "name": "stoor",
   "version": "2.2.0",
-  "description": "Local and Session storage wrapper with support for namespacing and multi get/set and remove",
+  "description": "Storage wrapper with support for namespacing, timeouts and multi get/set and remove",
   "license": "MIT",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",

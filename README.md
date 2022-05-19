@@ -1,75 +1,52 @@
-<h1 align="center">📦 stoor</h1>
-<div align="center">
-  <strong>Local and Session storage wrapper with support for namespacing and multi get/set and remove</strong>
-</div>
-<br>
-<div align="center">
-  <a href="https://npmjs.org/package/stoor">
-    <img src="https://img.shields.io/npm/v/stoor.svg?style=flat-square" alt="Package version" />
-  </a>
-  <a href="https://npmjs.org/package/stoor">
-  <img src="https://img.shields.io/npm/dm/stoor.svg?style=flat-square" alt="Downloads" />
-  </a>
-  <a href="https://github.com/feross/standard">
-    <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square" alt="Standard" />
-  </a>
-  <a href="https://travis-ci.org/tiaanduplessis/stoor">
-    <img src="https://img.shields.io/travis/tiaanduplessis/stoor.svg?style=flat-square" alt="Travis Build" />
-  </a>
-  <a href="https://badge.fury.io/gh/tiaanduplessis%2Fstoor">
-    <img src="https://badge.fury.io/gh/tiaanduplessis%2Fstoor.svg?style=flat-square" alt="GitHub version" />
-  </a>
-    <a href="https://greenkeeper.io/">
-    <img src="https://badges.greenkeeper.io/tiaanduplessis/stoor.svg" alt="Greenkeeper" />
-  </a>
-  <a href="https://github.com/tiaanduplessis/stoor/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/stoor.svg?style=flat-square" alt="License" />
-  </a>
-  <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs" />
-  </a>
-</div>
 
-<h2>Table of Contents</h2>
-<details>
-  <summary>Table of Contents</summary>
-  <li><a href="#about">About</a></li>
-  <li><a href="#install">Install</a></li>
-  <li><a href="#usage">Usage</a></li>
-  <li><a href="#contribute">Contribute</a></li>
-  <li><a href="#license">License</a></li>
-</details>
+# 📦 stoor
+[![package version](https://img.shields.io/npm/v/stoor.svg?style=flat-square)](https://npmjs.org/package/stoor)
+[![package downloads](https://img.shields.io/npm/dm/stoor.svg?style=flat-square)](https://npmjs.org/package/stoor)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![package license](https://img.shields.io/npm/l/stoor.svg?style=flat-square)](https://npmjs.org/package/stoor)
+[![make a pull request](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-## About
+Storage wrapper with support for namespacing, timeouts and multi get/set and remove.
 
-This module is a small wrapper (Less than 700 bytes) around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) that provides:
+## 👀 Background
+
+This module is a small wrapper around the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage) and [session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
+
+### Features
 
 - Parsing and stringification of values
+- Custom storage adaptor
 - Plugable fallback (defaults to in memory)
 - Namespacing
 - Multi get, set & remove of values
+- Expiring values
 
 ## Install
 
-With package manager:
+## ⚙️ Install
 
+Install the package locally within you project folder with your package manager:
+
+With `npm`:
 ```sh
-$ npm install --save stoor
-# OR
-$ yarn add stoor
+npm install stoor
 ```
 
-Or with CDN:
-
-```html
-<script src="https://unpkg.com/stoor/dist/stoor.umd.js"></script>
+With `yarn`:
+```sh
+yarn add stoor
 ```
 
-## Usage
+With `pnpm`:
+```sh
+pnpm add stoor
+```
 
-This example shows the entire API in use:
+## 📖 Usage
 
-```js
+### Kitchen sink
+
+```ts
 
 	var things = new Stoor({ namespace: 'things' }) // Namespaced to things and uses local storage
 	var otherThings = new Stoor({ namespace: 'otherThings', storage: 'session' }) // Namespaced to other things and uses Session storage
@@ -87,21 +64,29 @@ This example shows the entire API in use:
 	console.log(otherThings.get(['foo', 'bar'])) // [6, 5]
 
 	things.clear()
-
 ```
 
-You can configure any module that conforms to the the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage)/[sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) API to be the fallback, for example using [cookie-session-storage](https://github.com/tiaanduplessis/cookie-session-storage):
+### Custom storage
 
-```js
+You can configure any module that conforms to the the [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage)/[sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) API to be the fallback or main method of storage.
+
+
+For example using [cookie-session-storage](https://github.com/tiaanduplessis/cookie-session-storage):
+
+```ts
 new Stoor({fallback: cookieSessionStorage})
-
-// Use as normal
+new Stoor({storage: cookieSessionStorage})
 ```
 
-## Contribute
+## 📚 API
 
-Contributions are welcome. Please open up an issue or create PR if you would like to help out.
+For all configuration options, please see the [API docs](https://paka.dev/npm/stoor).
 
-## License
+## 💬 Contributing
 
-Licensed under the MIT License.
+Got an idea for a new feature? Found a bug? Contributions are welcome! Please [open up an issue](https://github.com/tiaanduplessis/stoor/issues) or [make a pull request](https://makeapullrequest.com/).
+
+## 🪪 License
+
+[MIT © Tiaan du Plessis](./LICENSE)
+    
