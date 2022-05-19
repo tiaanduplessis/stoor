@@ -22,7 +22,7 @@
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "build": "rm -rf dist && tsup src/index.tsx --format cjs,esm --dts --target node16",
+    "build": "rm -rf dist && tsup src/index.ts --format cjs,esm --dts --target node16",
     "prepublishOnly": "npm run build",
     "types:check": "tsc --noEmit",
     "format": "pretty-quick --ignore-path .gitignore"

@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"target": "es2018",
+		"module": "esnext",
+		"lib": ["esnext", "dom"],
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": false,
+		"jsx": "react",
+		"allowSyntheticDefaultImports": true
+	}
+}
