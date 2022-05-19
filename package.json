@@ -1,6 +1,6 @@
 {
   "name": "stoor",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Storage wrapper with support for namespacing, timeouts and multi get/set and remove",
   "license": "MIT",
   "types": "dist/index.d.ts",
