@@ -48,25 +48,25 @@ pnpm add stoor
 
 ```ts
 
-	var things = new Stoor({ namespace: 'things' }) // Namespaced to things and uses local storage
-	var otherThings = new Stoor({ namespace: 'otherThings', storage: 'session' }) // Namespaced to other things and uses Session storage
-	things.set('foo', 1)
-	things.set('bar', 2)
-	things.set('baz', { foo: 4, baz: 4 })
-	console.log(things.get('baz')) // {foo: 4, baz: 4}
-	console.log(otherThings.get('baz')) // null
-	console.log(things.get(['foo', 'bar'])) // [1, 2]
+var things = new Stoor({ namespace: 'things' }) // Namespaced to things and uses local storage
+var otherThings = new Stoor({ namespace: 'otherThings', storage: 'session' }) // Namespaced to other things and uses Session storage
+things.set('foo', 1)
+things.set('bar', 2)
+things.set('baz', { foo: 4, baz: 4 })
+console.log(things.get('baz')) // {foo: 4, baz: 4}
+console.log(otherThings.get('baz')) // null
+console.log(things.get(['foo', 'bar'])) // [1, 2]
 
-	things.remove(['foo', 'bar'])
-	console.log(things.get(['foo', 'bar'])) // [null, null]
+things.remove(['foo', 'bar'])
+console.log(things.get(['foo', 'bar'])) // [null, null]
 
-	otherThings.set([['bar', 5], ['foo', 6]]) // Array of key value pairs to multi set
-	console.log(otherThings.get(['foo', 'bar'])) // [6, 5]
+otherThings.set([['bar', 5], ['foo', 6]]) // Array of key value pairs to multi set
+console.log(otherThings.get(['foo', 'bar'])) // [6, 5]
 
-  otherThings.set('nana', 1, 5000) // Will expire within 5000 ms.
-  otherThings.get('nana', 3)  // Returns default value if expired.
+otherThings.set('nana', 1, 5000) // Will expire within 5000 ms.
+otherThings.get('nana', 3) // Returns default value if expired.
 
-	things.clear()
+things.clear()
 ```
 
 ### Custom storage
