@@ -21,12 +21,13 @@
   },
   "scripts": {
     "test": "vitest run",
+    "test:deno": "npm run build && node scripts/test-deno.mjs",
     "coverage": "vitest run --coverage",
     "build": "rm -rf dist && tsup src/index.ts --format cjs,esm --dts --target node16",
     "prepublishOnly": "npm run build",
     "types:check": "tsc --noEmit",
     "format": "pretty-quick --ignore-path .gitignore",
-    "format:check": "prettier --check src tests package.json tsconfig.json vitest.config.mts"
+    "format:check": "prettier --check src tests scripts package.json tsconfig.json vitest.config.mts"
   },
   "keywords": [
     "local-storage",
