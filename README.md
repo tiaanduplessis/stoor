@@ -95,6 +95,32 @@ new Stoor({storage: cookieSessionStorage})
 
 ## 📚 API
 
+### Deno 2
+
+Use the package's ESM entry point with Deno 2:
+
+```ts
+import Stoor from 'npm:stoor/dist/index.mjs'
+
+const persistent = new Stoor({ namespace: 'settings' })
+const session = new Stoor({ namespace: 'settings', storage: 'session' })
+
+persistent.set('theme', 'dark')
+console.log(persistent.get('theme'))
+```
+
+Deno's global `localStorage` is selected by default; `storage: 'session'` selects
+its global `sessionStorage`. Custom synchronous adapters still take precedence,
+and unavailable or unwritable storage uses the configured fallback. Node.js
+without `window` continues to use its fallback.
+
+`localStorage` persists between executions while `sessionStorage` lasts for one
+execution. Use a consistent `--location` (for example,
+`deno run --location https://my-app.example app.ts`) to select a stable storage
+origin. See [Deno's Web Storage documentation](https://docs.deno.com/runtime/reference/web_platform_apis/#web-storage).
+The API remains synchronous. Raw TypeScript source imports and async adapters
+are not part of this integration.
+
 For all configuration options, please see the [API docs](https://paka.dev/npm/stoor).
 
 ## 💬 Contributing
@@ -115,6 +141,11 @@ pnpm format:check
 pnpm build
 pnpm coverage
 ```
+
+With Deno 2 installed, run `pnpm test:deno` to type-check the built ESM consumer
+and verify Web Storage behavior across two separate Deno processes. The test
+uses its own temporary storage directory and origin, disables network access,
+and removes its fixtures afterward. Set `DENO_BIN` to use a specific Deno binary.
 
 ## 🪪 License
 

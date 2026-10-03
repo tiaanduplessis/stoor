@@ -27,20 +27,28 @@ class Stoor {
 		}
 
 		this.storage = fallback;
-		if (typeof window !== "undefined") {
-			try {
+		try {
+			// Deno 2 exposes Web Storage on globalThis without a window.
+			// Other no-window runtimes retain their existing fallback behavior.
+			const storageHost =
+				typeof window !== "undefined"
+					? window
+					: typeof (globalThis as { Deno?: unknown }).Deno !== "undefined"
+						? globalThis
+						: undefined;
+			if (storageHost) {
 				const activeStorage = isStorage(storage)
 					? storage
 					: storage === "session"
-						? window.sessionStorage
-						: window.localStorage;
+						? storageHost.sessionStorage
+						: storageHost.localStorage;
 				this.storage = (
 					isSupported(activeStorage) ? activeStorage : fallback
 				) as StorageLike;
-			} catch {
-				// Accessing browser storage itself can throw a SecurityError.
-				this.storage = fallback;
 			}
+		} catch {
+			// Accessing storage itself can throw a SecurityError.
+			this.storage = fallback;
 		}
 		this.namespace = namespace;
 	}
