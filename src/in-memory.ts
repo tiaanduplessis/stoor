@@ -1,22 +1,23 @@
 import { StorageLike } from "./types";
 
-let storage: StorageLike = {};
+let storage: Record<string, string> = Object.create(null);
 
 export const inMemory: StorageLike = {
 	getItem(key: string) {
-		return storage[key] || null;
+		return storage[String(key)] ?? null;
 	},
 
 	setItem(key: string, value: string) {
-		storage[key] = value;
+		storage[String(key)] = String(value);
 	},
 
 	removeItem(key: string) {
-		if (key in storage) {
-			return delete storage[key];
+		if (String(key) in storage) {
+			return delete storage[String(key)];
 		}
 	},
+
 	clear() {
-		storage = {};
+		storage = Object.create(null);
 	},
 };

@@ -26,27 +26,33 @@ class Stoor {
 			throw new Error("Invalid fallback provided");
 		}
 
-		if (typeof window === "undefined") {
-			this.storage = fallback;
-		} else {
-			const activeStorage = isStorage(storage)
-				? storage
-				: storage === "session"
-				? window.sessionStorage
-				: window.localStorage;
-			this.storage = (
-				isSupported(activeStorage) ? activeStorage : fallback
-			) as StorageLike;
+		this.storage = fallback;
+		if (typeof window !== "undefined") {
+			try {
+				const activeStorage = isStorage(storage)
+					? storage
+					: storage === "session"
+						? window.sessionStorage
+						: window.localStorage;
+				this.storage = (
+					isSupported(activeStorage) ? activeStorage : fallback
+				) as StorageLike;
+			} catch {
+				// Accessing browser storage itself can throw a SecurityError.
+				this.storage = fallback;
+			}
 		}
 		this.namespace = namespace;
 	}
 
 	private getValue = (key: string, def?: any) => {
 		try {
-			const result = JSON.parse(this.storage.getItem(key));
+			const stored = this.storage.getItem(key);
+			if (stored === null) return def;
+			const result = JSON.parse(stored);
 			const { value, timeout } = result;
 			if (timeout !== null) {
-				return timeout < Date.now() ? value ?? def : undefined;
+				return timeout > Date.now() ? (value ?? def) : def;
 			}
 			return value ?? def;
 		} catch {
@@ -54,16 +60,16 @@ class Stoor {
 		}
 	};
 
-	get(key: string = "", def: any = null) {
-		if (typeof key !== "string" || !key.length) {
-			throw new Error("Invalid key provided");
+	get(key: string[], def?: any): any[];
+	get(key?: string, def?: any): any;
+	get(key: string | string[], def?: any): any;
+	get(key: string | string[] = "", def: any = null): any {
+		if (Array.isArray(key)) {
+			return key.map((currentKey) => this.get(currentKey, def));
 		}
 
-		if (Array.isArray(key)) {
-			return key.map((currentKey) => {
-				const namespacedKey = `${this.namespace}:${currentKey}`;
-				return this.getValue(namespacedKey, def);
-			});
+		if (typeof key !== "string" || !key.length) {
+			throw new Error("Invalid key provided");
 		}
 
 		const namespacedKey = `${this.namespace}:${key}`;
@@ -73,7 +79,7 @@ class Stoor {
 	private setValue = (
 		key: string,
 		value: any,
-		timeout: number | null = null
+		timeout: number | null = null,
 	) => {
 		const entry = {
 			value,
@@ -82,7 +88,18 @@ class Stoor {
 		this.storage.setItem(key, JSON.stringify(entry));
 	};
 
-	set(key: string | string[], value?: any, timeout: number | null = null) {
+	set(key: string, value?: any, timeout?: number | null): this;
+	set(key: [string, any][], value?: any, timeout?: number | null): void[];
+	set(
+		key: string | [string, any][],
+		value?: any,
+		timeout?: number | null,
+	): this | void[];
+	set(
+		key: string | [string, any][],
+		value?: any,
+		timeout: number | null = null,
+	) {
 		if (typeof key !== "string" && !Array.isArray(key)) {
 			throw new Error("Invalid key provided");
 		}
@@ -101,6 +118,9 @@ class Stoor {
 		return this;
 	}
 
+	remove(key: string): this;
+	remove(key: string[]): void[];
+	remove(key: string | string[]): this | void[];
 	remove(key: string | string[]) {
 		if (Array.isArray(key)) {
 			return key.map((currentKey) => {
