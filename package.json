@@ -21,9 +21,10 @@
   },
   "scripts": {
     "test": "vitest run",
+    "test:async": "npm run build && node tests/async.integration.mjs",
     "test:deno": "npm run build && node scripts/test-deno.mjs",
     "coverage": "vitest run --coverage",
-    "build": "rm -rf dist && tsup src/index.ts --format cjs,esm --dts --target node16",
+    "build": "rm -rf dist && tsup src/index.ts src/async.ts --format cjs,esm --dts --target node16",
     "prepublishOnly": "npm run build",
     "types:check": "tsc --noEmit",
     "format": "pretty-quick --ignore-path .gitignore",

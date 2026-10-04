@@ -93,6 +93,112 @@ new Stoor({fallback: cookieSessionStorage})
 new Stoor({storage: cookieSessionStorage})
 ```
 
+### Asynchronous adapters
+
+Use the separate `AsyncStoor` entry for an explicitly supplied asynchronous
+adapter. The default `stoor` entry and its synchronous API are unchanged.
+
+```ts
+import AsyncStoor from 'stoor/dist/async.mjs'
+
+// The application supplies an already initialized client, for example Redis.
+const store = new AsyncStoor({
+  namespace: 'settings',
+  storage: {
+    getItem(key) { return client.get(key) },
+    async setItem(key, value) { await client.set(key, value) },
+    async removeItem(key) { await client.del(key) }
+  }
+})
+
+await store.set('theme', 'dark')
+console.log(await store.get('theme')) // 'dark'
+await store.set([['one', 1], ['two', 2]], undefined, 5000)
+console.log(await store.get(['two', 'missing'], false)) // [2, false]
+await store.remove(['one', 'two'])
+```
+
+CommonJS consumers use
+`const { default: AsyncStoor } = require('stoor/dist/async.js')`.
+Deno consumers use `import AsyncStoor from 'npm:stoor/dist/async.mjs'`.
+The adapter and configuration types are exported from the same entry:
+
+```ts
+interface AsyncStorageAdapter {
+  getItem(key: string): string | null | PromiseLike<string | null>
+  setItem(key: string, value: string): void | PromiseLike<void>
+  removeItem(key: string): void | PromiseLike<void>
+}
+```
+
+Synchronous adapters also work. Methods retain their adapter receiver, and write
+and removal results are discarded. `getItem` must return `null` for a missing
+key. A resolved write/removal promise must acknowledge completion, rather than
+just queueing work inside the adapter.
+
+The constructor only validates the adapter's shape and namespace. It does not
+call the adapter or select global storage. There is no built-in Redis client,
+connection setup, credential handling, fallback, support probe, retry, cleanup,
+or `clear()` method. Client connections, error listeners, retry policies and
+shutdown remain the application's responsibility. Remove only explicitly named
+keys with `remove`; no storage-wide operation is issued.
+
+#### Async keys, values and expiration
+
+The namespace defaults to `''` and must be a string without `:`. Every key must
+be a nonempty string. Physical keys retain the existing `${namespace}:${key}`
+format, so normal synchronous Stoor records can be shared. Existing namespaces
+containing `:` are not accepted by AsyncStoor. Namespaces are not an access-control
+boundary, particularly when other code also writes to the same storage.
+
+Values retain the JSON `{ value, timeout }` envelope. JSON's usual transformations
+and limitations apply: dates become strings, unsupported object properties are
+omitted, and circular values or BigInt reject. Reads use the supplied default
+(`null` when omitted) for missing, expired or nullish values. Other falsy values
+are preserved. Adapter errors, malformed JSON, invalid envelopes and invalid
+adapter return values reject the operation instead of returning its default.
+Reads never remove or repair a record.
+
+Timeouts use milliseconds. Omitted, `null` and `0` mean no expiry; negative
+timeouts are already expired. Other timeouts and their computed deadlines must
+be finite numbers. The deadline is captured when `set` is called, once for the
+whole batch, so queue and network delays count toward expiry. Expiration is
+checked after each read completes. Expired records remain stored; there are no
+backend TTL commands or expiry timers.
+
+#### Async ordering and failures
+
+All methods return promises, including when their arguments are invalid.
+Constructor configuration errors throw synchronously. Single-key `set` and
+`remove` resolve to the instance; bulk forms resolve to arrays of `undefined`.
+Await each operation before using its result: immediate `set(...).set(...)`
+chaining is not available. Multi-get preserves input order and duplicate keys.
+
+Each instance runs calls in invocation order, including reads, with one adapter
+operation in flight at a time. A whole batch occupies one queue slot. Keys and
+serialized write payloads are captured synchronously when the method is called;
+later argument mutations do not change the queued operation. The slot is reserved
+before validation and serialization, so calls made by a getter or `toJSON` wait
+behind their parent operation even if that parent fails to serialize.
+
+All batch keys and write payloads are validated before any adapter call. Entries
+then execute sequentially, stopping at the first failure. Earlier successful
+writes/removals remain applied; later entries are not attempted. A backend or
+decoding failure rejects with `AsyncStoorBatchError`, exported from the async
+entry, with `operation`, `index`, `key`, `completedCount` and the original `cause`.
+The index is zero-based and the key is the logical key without the namespace.
+`completedCount` counts acknowledged operations. A rejected write/removal may
+already have committed before its connection failed; its outcome is unknown.
+There is no automatic retry, rollback or partial-success return value.
+Preflight validation/serialization failures reject directly before any I/O.
+
+A failed call does not prevent later queued calls from running. Await a successful
+write before relying on its outcome. An adapter promise that never settles blocks
+that instance's queue. Adapter methods must not await a call back into the same
+instance, since that nested call would wait behind the adapter itself. Ordering
+does not extend to other instances or external writers; batches are not
+transactions or consistent snapshots.
+
 ## 📚 API
 
 ### Deno 2
@@ -118,8 +224,8 @@ without `window` continues to use its fallback.
 execution. Use a consistent `--location` (for example,
 `deno run --location https://my-app.example app.ts`) to select a stable storage
 origin. See [Deno's Web Storage documentation](https://docs.deno.com/runtime/reference/web_platform_apis/#web-storage).
-The API remains synchronous. Raw TypeScript source imports and async adapters
-are not part of this integration.
+The default API remains synchronous. For explicit async adapters, use the separate
+AsyncStoor entry above. Raw TypeScript source imports are not supported.
 
 For all configuration options, please see the [API docs](https://paka.dev/npm/stoor).
 
@@ -140,14 +246,15 @@ pnpm types:check
 pnpm format:check
 pnpm build
 pnpm coverage
+pnpm test:async
 ```
 
 With Deno 2 installed, run `pnpm test:deno` to type-check the built ESM consumer
-and verify Web Storage behavior across two separate Deno processes. The test
+and async adapter fixture, run the fake async adapter checks, and verify Web
+Storage behavior across two separate Deno processes. The test
 uses its own temporary storage directory and origin, disables network access,
 and removes its fixtures afterward. Set `DENO_BIN` to use a specific Deno binary.
 
 ## 🪪 License
 
 [MIT © Tiaan du Plessis](./LICENSE)
-    
