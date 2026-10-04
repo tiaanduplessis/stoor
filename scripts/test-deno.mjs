@@ -9,6 +9,9 @@ const fixture = mkdtempSync(join(tmpdir(), "stoor-deno-"));
 const testFile = fileURLToPath(
 	new URL("../tests/deno.integration.mjs", import.meta.url),
 );
+const asyncTestFile = fileURLToPath(
+	new URL("../tests/async.integration.mjs", import.meta.url),
+);
 const options = {
 	cwd: fixture,
 	stdio: "inherit",
@@ -23,6 +26,8 @@ const options = {
 const flags = ["--no-config", "--no-lock", "--no-npm", "--cached-only"];
 
 try {
+	execFileSync(deno, ["check", "--check-js", ...flags, asyncTestFile], options);
+	execFileSync(deno, ["run", ...flags, "--deny-net", asyncTestFile], options);
 	execFileSync(deno, ["check", "--check-js", ...flags, testFile], options);
 	for (const phase of ["write", "read"]) {
 		execFileSync(
